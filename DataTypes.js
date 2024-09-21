@@ -69,7 +69,7 @@ console.log(typeof "hello");  // "string"
 console.log(typeof true);  // "boolean"
 console.log(typeof {});  // "object"
 console.log(typeof undefined);  // "undefined"
-// console.log(typeof null);  // "object"  (This is a quirk of JavaScript)
+console.log(typeof null);  // "object"  (This is a quirk of JavaScript)
 
 
 // Summary of JavaScript Data Types:
