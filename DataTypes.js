@@ -1,9 +1,20 @@
 // JavaScript has various data types that are divided into two categories: primitive types and non-primitive (reference) types.
 
+
+// JavaScript is a dynamically typed language.
+// This means that the type of a variable is determined at runtime, not at compile time. You don't need to explicitly declare the type of a variable when you create it. 
+
+
+
+
 // 1. Primitive Data Types
 // These are the basic types that are immutable (cannot be changed). They store a single value and are compared by value.
 
 // Number: Represents both integer and floating-point numbers.
+
+
+
+
 
 
 let num = 42;
@@ -77,3 +88,6 @@ console.log(typeof null);  // "object"  (This is a quirk of JavaScript)
 // Primitive: Number, String, Boolean, Undefined, Null, Symbol, BigInt
 // Non-Primitive (Reference): Object, Array, Function, Date
 // These types give JavaScript flexibility to handle various kinds of data and operations.
+
+
+
