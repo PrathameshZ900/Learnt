@@ -15,7 +15,7 @@ console.log(text1.length); // Output: 5
 // charAt(index): Returns the character at the specified index.
 
 let text2 = "Hello";
-console.log(text2.charAt(1)); // Output: "e"
+// console.log(text2.charAt(1)); // Output: "e"
 
 // charCodeAt(index): Returns the Unicode of the character at the specified index.
 
