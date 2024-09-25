@@ -1,12 +1,13 @@
 // Singleton Pattern and Object Creation in JavaScript
 
-// Singleton Pattern
-// The Singleton pattern ensures that a class has only one instance and provides a global point of access to it. This can be useful in cases where having multiple instances of an object might create issues, like managing shared resources or configurations.
-
-// In JavaScript, Singleton can be implemented using closures or immediately-invoked function expressions (IIFE) to maintain the single instance. Here’s a simple example:
+/* 
+    Singleton Pattern:
+    The Singleton pattern ensures that a class has only one instance and provides a global point of access to it.
+    This is useful in cases like managing shared resources or configurations where multiple instances might create issues.
+*/
 
 const Singleton = (function () {
-    let instance;
+    let instance; // Store the single instance
 
     function createInstance() {
         const object = new Object("I am the instance");
@@ -16,7 +17,7 @@ const Singleton = (function () {
     return {
         getInstance: function () {
             if (!instance) {
-                instance = createInstance();
+                instance = createInstance(); // Create instance if not already created
             }
             return instance;
         }
@@ -26,18 +27,24 @@ const Singleton = (function () {
 const instance1 = Singleton.getInstance();
 const instance2 = Singleton.getInstance();
 
-console.log(instance1 === instance2); // true
+console.log(instance1 === instance2); // true (Both point to the same instance)
 
-// Object Creation
-// - Object Literals: The most common way to create objects in JavaScript.
 
+/*
+    Object Creation:
+    1. Object Literals:
+       The most common way to create objects in JavaScript.
+*/
 const user = {
     name: "John Doe",
     age: 30,
     isAdmin: true
 };
 
-// - Object.create(): Creates a new object with the specified prototype object and properties.
+/*
+    2. Object.create():
+       Creates a new object with the specified prototype object and properties.
+*/
 
 const person = {
     isHuman: false,
@@ -46,43 +53,51 @@ const person = {
     }
 };
 
-const me = Object.create(person);
-me.name = "Matthew"; // 'name' is a property set on 'me', but not on 'person'
-me.isHuman = true;
-me.printIntroduction(); // My name is Matthew. Am I human? true
+const me = Object.create(person); // 'me' inherits from 'person'
+me.name = "Matthew";  // 'name' is a property set on 'me', but not on 'person'
+me.isHuman = true;    // Overriding inherited property
+me.printIntroduction();  // My name is Matthew. Am I human? true
 
-Object Methods
 
-1. Object.freeze()
-   - Freezes an object, preventing new properties from being added or existing properties from being removed/modified.
-   - This is useful for creating immutable objects.
+/*
+    Object Methods:
+    1. Object.freeze():
+       Prevents any modifications to the object (like making the object immutable).
+*/
 
 const obj = { name: "Alice" };
 Object.freeze(obj);
-obj.name = "Bob"; // No effect
-console.log(obj.name); // "Alice"
+obj.name = "Bob";  // No effect since the object is frozen
+console.log(obj.name);  // "Alice"
 
-2. Object.keys(), Object.values(), Object.entries()
-   - Object.keys(): Returns an array of the object’s keys.
-   - Object.values(): Returns an array of the object’s values.
-   - Object.entries(): Returns an array of key-value pairs as an array.
 
-const user = { id: 1, name: "Sammy", email: "sammy@example.com" };
-console.log(Object.keys(user));   // ['id', 'name', 'email']
-console.log(Object.values(user)); // [1, 'Sammy', 'sammy@example.com']
-console.log(Object.entries(user));// [['id', 1], ['name', 'Sammy'], ['email', 'sammy@example.com']]
+/*
+    2. Object.keys(), Object.values(), Object.entries():
+       These methods are used to retrieve the keys, values, and key-value pairs of an object.
+*/
 
-3. Object.assign()
-   - Used to copy the values of all enumerable properties from one or more source objects to a target object.
+const userDetails = { id: 1, name: "Sammy", email: "sammy@example.com" };
+console.log(Object.keys(userDetails));   // ['id', 'name', 'email']
+console.log(Object.values(userDetails)); // [1, 'Sammy', 'sammy@example.com']
+console.log(Object.entries(userDetails));// [['id', 1], ['name', 'Sammy'], ['email', 'sammy@example.com']]
+
+
+/*
+    3. Object.assign():
+       Used to copy values from one or more source objects to a target object.
+*/
 
 const target = { a: 1, b: 2 };
 const source = { b: 4, c: 5 };
 const returnedTarget = Object.assign(target, source);
 console.log(returnedTarget); // { a: 1, b: 4, c: 5 }
 
-Destructuring Objects
-- A convenient way of extracting multiple properties from an object and assigning them to variables.
-  
+
+/*
+    Destructuring Objects:
+    This syntax allows us to extract properties from objects and assign them to variables.
+*/
+
 const course = {
     courseName: "JavaScript",
     price: 1000,
@@ -90,14 +105,15 @@ const course = {
 };
 
 const { courseName, instructor } = course;
-console.log(courseName); // JavaScript
-console.log(instructor); // Hitesh
+console.log(courseName); // "JavaScript"
+console.log(instructor); // "Hitesh"
 
-Key Interview Concepts
 
-1. Prototypes and Inheritance
-   - JavaScript objects have a prototype. A prototype is also an object.
-   - All JavaScript objects inherit properties and methods from their prototype.
+/*
+    Key Interview Concepts:
+    1. Prototypes and Inheritance:
+       JavaScript objects have a prototype, and all objects inherit properties and methods from their prototype.
+*/
 
 function Hero(name, ability) {
     this.name = name;
@@ -109,10 +125,13 @@ Hero.prototype.getDetails = function () {
 };
 
 const thor = new Hero("Thor", "fly");
-console.log(thor.getDetails()); // Thor can fly
+console.log(thor.getDetails());  // Thor can fly
 
-2. Closures
-   - A closure is a function that remembers its outer variables even after the outer function has executed.
+
+/*
+    2. Closures:
+       A closure is a function that retains access to its lexical scope, even when the function is executed outside that scope.
+*/
 
 function outer() {
     let count = 0;
@@ -126,20 +145,26 @@ const increment = outer();
 console.log(increment()); // 1
 console.log(increment()); // 2
 
-3. this Keyword
-   - Refers to the object from which a function is called.
 
-const user = {
+/*
+    3. this Keyword:
+       'this' refers to the object from which the function was called.
+*/
+
+const userObj = {
     name: "John",
     greet() {
         console.log(`Hello, ${this.name}`);
     }
 };
 
-user.greet(); // Hello, John
+userObj.greet();  // Hello, John
 
-4. Object-Oriented Programming (OOP)
-   - JavaScript allows for OOP principles like encapsulation, inheritance, and polymorphism.
+
+/*
+    4. Object-Oriented Programming (OOP):
+       JavaScript supports OOP principles such as encapsulation, inheritance, and polymorphism.
+*/
 
 class Vehicle {
     constructor(name, speed) {
@@ -154,7 +179,7 @@ class Vehicle {
 
 class Car extends Vehicle {
     constructor(name, speed, brand) {
-        super(name, speed);
+        super(name, speed);  // Call the parent constructor
         this.brand = brand;
     }
 
@@ -164,22 +189,28 @@ class Car extends Vehicle {
 }
 
 const myCar = new Car("Sedan", 120, "Toyota");
-myCar.move(); // Toyota Sedan is moving at 120 km/h
+myCar.move();  // Toyota Sedan is moving at 120 km/h
 
-Singleton vs Factory Pattern (Interview Focus)
-- Singleton Pattern: Ensures that a class has only one instance. Useful in scenarios where multiple instances would lead to inconsistent states, like in managing application configurations.
-  
-- Factory Pattern: This pattern allows for creating objects without specifying the exact class of object that will be created.
 
-class Car {
-    constructor(name) {
-        this.name = name;
+/*
+    Singleton vs Factory Pattern (Interview Focus):
+    
+    Singleton Pattern:
+    - Ensures only one instance of a class is created, which is shared across the application.
+
+    Factory Pattern:
+    - A pattern that allows for creating objects without specifying the exact class of the object to be created.
+*/
+
+class CarFactory {
+    createCar(name) {
+        return new Car(name);
     }
 }
 
-class Truck {
-    constructor(name) {
-        this.name = name;
+class TruckFactory {
+    createTruck(name) {
+        return new Truck(name);
     }
 }
 
@@ -187,19 +218,22 @@ class VehicleFactory {
     createVehicle(type, name) {
         switch (type) {
             case "car":
-                return new Car(name);
+                return new CarFactory().createCar(name);
             case "truck":
-                return new Truck(name);
+                return new TruckFactory().createTruck(name);
         }
     }
 }
 
-const factory = new VehicleFactory();
-const myCar = factory.createVehicle("car", "Honda");
-console.log(myCar); // Car { name: 'Honda' }
+const vehicleFactory = new VehicleFactory();
+const newCar = vehicleFactory.createVehicle("car", "Honda");
+console.log(newCar);  // Car { name: 'Honda' }
 
-Best Practices in Object-Oriented JavaScript (Interview Tips)
-1. Encapsulation: Keep data and methods inside objects/classes.
-2. Abstraction: Hide unnecessary details from the user and expose only what is needed.
-3. Modularity: Break down the functionality into smaller, reusable modules.
-4. Polymorphism: Use a unified interface for different object types, especially with inheritance.
+
+/*
+    Best Practices in Object-Oriented JavaScript (Interview Tips):
+    1. Encapsulation: Keep data and methods inside objects/classes.
+    2. Abstraction: Hide unnecessary details from the user, and expose only what is needed.
+    3. Modularity: Break down functionality into smaller, reusable modules.
+    4. Polymorphism: Use a unified interface for different object types, especially with inheritance.
+*/
