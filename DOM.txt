@@ -1,0 +1,105 @@
+Question 1: What does the document.createElement() method do?
+Answer:
+The document.createElement() method creates an HTML element in the DOM. For example, in the third code snippet, document.createElement('div') creates a new <div> element but does not yet attach it to the DOM.
+
+Question 2: How can you add text to an element in the DOM?
+Answer:
+There are multiple ways to add text to an element in the DOM:
+
+Using innerText or innerHTML: div.innerText = "Chai aur code";
+Using createTextNode() to create a text node and then appending it:
+javascript
+Copy code
+const textNode = document.createTextNode("Chai aur code");
+div.appendChild(textNode);
+Question 3: How can you modify the style of an element using JavaScript?
+Answer:
+You can modify the style of an element by accessing the style property and setting CSS properties. For example:
+
+javascript
+Copy code
+parent.children[1].style.color = "orange";
+div.style.backgroundColor = "green";
+div.style.padding = "12px";
+This directly modifies the inline style of the selected element.
+
+Question 4: What is the difference between innerHTML and textContent?
+Answer:
+
+innerHTML: Returns or sets the HTML or XML markup contained within the element. This means it can handle HTML tags and render them as elements.
+textContent: Returns or sets the text content of the element without parsing HTML tags. It treats everything as plain text.
+In the snippet:
+
+javascript
+Copy code
+li.innerHTML = `${langName}`;
+It sets the inner HTML of the list item with possible HTML tags, while:
+
+javascript
+Copy code
+newli.textContent = "Mojo";
+It sets only the text content without parsing any HTML tags.
+
+Question 5: How can you replace an existing element in the DOM with another one?
+Answer:
+You can replace an existing element using the replaceWith() method. In the fourth code snippet:
+
+javascript
+Copy code
+secondLang.replaceWith(newli);
+This replaces the secondLang element with newli.
+
+Question 6: How do you remove an element from the DOM?
+Answer:
+To remove an element from the DOM, you can use the remove() method. For example:
+
+javascript
+Copy code
+const lastLang = document.querySelector('li:last-child');
+lastLang.remove();
+This removes the last <li> element from the list.
+
+Question 7: What is the difference between innerHTML and outerHTML?
+Answer:
+
+innerHTML modifies or retrieves the HTML content inside the element.
+outerHTML includes the element itself along with its content. It can be used to replace the entire element with a new element, as shown here:
+javascript
+Copy code
+firstLang.outerHTML = '<li>TypeScript</li>';
+This replaces the entire firstLang element with a new <li> element containing the text "TypeScript".
+
+Question 8: How do you iterate over children of a DOM element?
+Answer:
+You can iterate over the children property of a DOM element, which returns a live HTMLCollection of the element's child elements. For example:
+
+javascript
+Copy code
+for (let i = 0; i < parent.children.length; i++) {
+    console.log(parent.children[i].innerHTML);
+}
+This loop goes through each child of the parent element and logs its content.
+
+Question 9: What is the difference between childNodes and children in the DOM?
+Answer:
+
+childNodes returns a NodeList of all child nodes, including text nodes (whitespace, line breaks, etc.).
+children returns only the HTML element children, excluding text and comment nodes.
+For example:
+
+javascript
+Copy code
+console.log(parent.childNodes);  // Logs all child nodes, including text nodes.
+console.log(parent.children);    // Logs only element nodes.
+Question 10: How can you dynamically add elements to an existing list in the DOM?
+Answer:
+You can create new elements using document.createElement() and append them using appendChild(). For example:
+
+javascript
+Copy code
+const li = document.createElement('li');
+li.textContent = 'New Language';
+document.querySelector('.language').appendChild(li);
+This adds a new <li> element to the .language list.
+
+These questions can test your understanding of DOM manipulation, element creation, styling, and node properties in JavaScript.
