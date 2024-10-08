@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Scheme Switcher</title>
+
+    <style>
+        /* Global Styles */
+        :root {
+            --primary-font: 'Poppins', sans-serif;
+            --transition-time: 0.4s;
+            --blur-opacity: rgba(255, 255, 255, 0.2);
+            --glass-border: rgba(255, 255, 255, 0.2);
+        }
+
+        body {
+            margin: 0;
+            font-family: var(--primary-font);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #f9a8d4, #f87171, #facc15);
+            background-size: 300% 300%;
+            animation: gradientAnimation 10s ease infinite;
+            transition: background-color var(--transition-time);
+            overflow: hidden;
+        }
+
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        h1 {
+            font-size: 3rem;
+            color: white;
+            margin-bottom: 30px;
+            animation: fadeInDown 1.5s ease;
+        }
+
+        @keyframes fadeInDown {
+            0% { opacity: 0; transform: translateY(-50px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .canvas {
+            text-align: center;
+            backdrop-filter: blur(10px);
+            background-color: var(--blur-opacity);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--glass-border);
+        }
+
+        /* Button Styles */
+        .button {
+            width: 100px;
+            height: 100px;
+            border: solid 2px black;
+            display: inline-block;
+            margin: 10px;
+            cursor: pointer;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            background-color: var(--blur-opacity);
+            transition: all var(--transition-time);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            color: white;
+            font-size: 1.2rem;
+            text-align: center;
+            line-height: 100px;
+            user-select: none;
+        }
+
+        .button:hover {
+            transform: scale(1.15);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        #grey {
+            background-color: grey;
+        }
+
+        #white {
+            background-color: white;
+            color: black;
+        }
+
+        #blue {
+            background-color: blue;
+        }
+
+        #yellow {
+            background-color: yellow;
+            color: black;
+        }
+
+        .reset-btn {
+            background-color: rgba(255, 255, 255, 0.5);
+            padding: 10px 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border: 2px solid white;
+            color: black;
+            cursor: pointer;
+            transition: background-color var(--transition-time);
+        }
+
+        .reset-btn:hover {
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-top: 20px;
+            color: white;
+        }
+
+        h2 span {
+            font-weight: bold;
+            color: #ffeb3b;
+        }
+    </style>
+</head>
+<body>
+    <div class="canvas">
+        <h1>Color Scheme Switcher</h1>
+        <span class="button" id="grey" title="Grey Background">Grey</span>
+        <span class="button" id="white" title="White Background">White</span>
+        <span class="button" id="blue" title="Blue Background">Blue</span>
+        <span class="button" id="yellow" title="Yellow Background">Yellow</span>
+        <h2>Current Background Color: <span id="color-name">Gradient</span></h2>
+        <button class="reset-btn" id="reset-btn">Reset to Gradient</button>
+    </div>
+
+    <script>
+        // Function to change the background color
+        const buttons = document.querySelectorAll('.button');
+        const colorName = document.getElementById('color-name');
+        const resetBtn = document.getElementById('reset-btn');
+        const body = document.body;
+
+        // Apply solid background color when a button is clicked
+        buttons.forEach(button => {
+            button.addEventListener('click', function() {
+                const color = this.id;
+                body.style.background = color;
+                colorName.textContent = color.charAt(0).toUpperCase() + color.slice(1);
+            });
+        });
+
+        // Reset button to return to default gradient background
+        resetBtn.addEventListener('click', function() {
+            body.style.background = 'linear-gradient(135deg, #f9a8d4, #f87171, #facc15)';
+            colorName.textContent = 'Gradient';
+        });
+    </script>
+</body>
+</html>
