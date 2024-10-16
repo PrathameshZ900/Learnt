@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World Clock</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+            color: #fff;
+            overflow: hidden;
+            position: relative;
+            animation: backgroundAnimation 10s infinite alternate;
+        }
+
+        @keyframes backgroundAnimation {
+            0% {
+                background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            }
+            100% {
+                background: linear-gradient(135deg, #ff6e7f, #b21f1f, #ff8e53);
+            }
+        }
+
+        .container {
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            backdrop-filter: blur(15px);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #ffeb3b;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
+        }
+
+        .clock {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            border: 10px solid #ffeb3b;
+            border-radius: 50%;
+            margin: 20px auto;
+            background-color: #222;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+        }
+
+        .hand {
+            position: absolute;
+            background-color: #ffeb3b;
+            border-radius: 10px;
+            transform-origin: bottom;
+            bottom: 50%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .hour {
+            width: 6px;
+            height: 50px;
+            z-index: 3;
+        }
+
+        .minute {
+            width: 4px;
+            height: 70px;
+            z-index: 2;
+        }
+
+        .second {
+            width: 2px;
+            height: 90px;
+            background-color: #ff5722;
+            z-index: 1;
+        }
+
+        .greeting {
+            font-size: 1.5rem;
+            margin-top: 20px;
+            color: #ff5722;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .time-display {
+            font-size: 1.5rem;
+            margin-top: 10px;
+        }
+
+        select {
+            font-size: 1.5rem;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            background-color: #ff5722;
+            color: #fff;
+            outline: none;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        select:hover {
+            background-color: #e64a19;
+            transform: translateY(-2px);
+        }
+
+        /* Media queries for responsiveness */
+        @media screen and (max-width: 600px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .clock {
+                width: 150px;
+                height: 150px;
+            }
+
+            .time-display {
+                font-size: 1.2rem;
+            }
+
+            select {
+                font-size: 1rem;
+                padding: 10px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>World Clock</h1>
+        <div class="clock">
+            <div class="hand hour" id="hourHand"></div>
+            <div class="hand minute" id="minuteHand"></div>
+            <div class="hand second" id="secondHand"></div>
+        </div>
+        <div class="greeting" id="greeting"></div>
+        <div class="time-display" id="time"></div>
+        <select id="timezone">
+            <option value="5.5">India (UTC +5:30)</option>
+            <option value="-5">New York (UTC -5)</option>
+            <option value="0">UTC</option>
+            <option value="1">London (UTC +1)</option>
+            <option value="9">Tokyo (UTC +9)</option>
+            <option value="10">Sydney (UTC +10)</option>
+        </select>
+    </div>
+
+    <script>
+        const hourHand = document.getElementById('hourHand');
+        const minuteHand = document.getElementById('minuteHand');
+        const secondHand = document.getElementById('secondHand');
+        const timezoneSelect = document.getElementById('timezone');
+        const greetingElement = document.getElementById('greeting');
+        const timeDisplay = document.getElementById('time');
+
+        // Load sound files
+        const tickSound = new Audio('tik.mp3');  // Path to your 'tik tik' sound
+        const chimeSound = new Audio('chime.mp3');  // Path to your hourly chime sound
+
+        // Function to update the clock hands and greeting
+        function updateClock() {
+            const timezoneOffset = parseFloat(timezoneSelect.value) * 60; // Convert hours to minutes
+            const currentDate = new Date();
+            const utcTime = currentDate.getTime() + (currentDate.getTimezoneOffset() * 60000); // UTC time in milliseconds
+            const targetTime = new Date(utcTime + (timezoneOffset * 60000)); // Target time with offset
+
+            const hours = targetTime.getHours();
+            const minutes = targetTime.getMinutes();
+            const seconds = targetTime.getSeconds();
+
+            // Calculate degrees for each hand
+            const hourDeg = (hours % 12) * 30 + (minutes / 60) * 30; // 360 / 12
+            const minuteDeg = minutes * 6; // 360 / 60
+            const secondDeg = seconds * 6; // 360 / 60
+
+            // Apply the transformation
+            hourHand.style.transform = `translateX(-50%) rotate(${hourDeg}deg)`;
+            minuteHand.style.transform = `translateX(-50%) rotate(${minuteDeg}deg)`;
+            secondHand.style.transform = `translateX(-50%) rotate(${secondDeg}deg)`;
+
+            // Play the "tick" sound every second
+            tickSound.play();
+
+            // Play the chime sound at the start of every hour
+            if (minutes === 0 && seconds === 0) {
+                chimeSound.play();
+            }
+
+            // Update greeting based on the time of day
+            if (hours < 12) {
+                greetingElement.innerHTML = "Good Morning!";
+            } else if (hours < 18) {
+                greetingElement.innerHTML = "Good Afternoon!";
+            } else {
+                greetingElement.innerHTML = "Good Evening!";
+            }
+
+            // Update the time display
+            timeDisplay.innerHTML = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        // Update the clock every second
+        setInterval(updateClock, 1000);
+
+        // Trigger update when timezone changes
+        timezoneSelect.addEventListener('change', updateClock);
+
+        // Initial clock update
+        updateClock();
+    </script>
+</body>
+</html>
