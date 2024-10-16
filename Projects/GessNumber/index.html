@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Number Guessing Game</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../styles.css">
+
+    <style>
+
+        /* Resetting margins and paddings for all elements */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #1c1c1c;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+#wrapper {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    padding: 40px;
+    max-width: 450px;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+    animation: slideIn 1s ease;
+    transition: all 0.3s ease;
+}
+
+h1 {
+    font-size: 2.5rem;
+    color: #ffeb3b;
+    margin-bottom: 20px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+p {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    color: #bdbdbd;
+}
+
+.form {
+    margin-top: 20px;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    background-color: #2c2c2c;
+    color: #fff;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+
+input[type="text"]:focus {
+    border: 2px solid #ff5722;
+    box-shadow: 0 0 10px rgba(255, 87, 34, 0.7);
+}
+
+input[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    font-size: 1.2rem;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    background-color: #ff5722;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+input[type="submit"]:hover {
+    background-color: #f50057;
+    box-shadow: 0 0 15px rgba(245, 0, 87, 0.7);
+}
+
+.resultParas p {
+    font-size: 1.2rem;
+    margin-top: 15px;
+    color: #fff;
+}
+
+.guesses {
+    color: #ffeb3b;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.lowOrHi {
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
+.lastResult {
+    font-weight: bold;
+    color: #f50057;
+}
+
+/* Animation for wrapper slide in effect */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media screen and (max-width: 500px) {
+    #wrapper {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    input[type="text"], input[type="submit"] {
+        padding: 10px;
+        font-size: 1rem;
+    }
+}
+    </style>
+</head>
+<body>
+    
+    <div id="wrapper">
+        <h1>Number guessing game</h1>
+        <p>Try and guess a random number between 1 and 100.</p>
+        <p>You have 10 attempts to guess the right number.</p>
+        <br/>
+        <form class="form">
+            <label for="guessField" id="guess">Guess a number</label>
+            <input type="text" id="guessField" class="guessField">
+            <input type="submit" id="subt" value="Submit guess" class="guessSubmit">
+        </form>
+
+        <div class="resultParas">
+            <p>Previous Guesses: <span class="guesses"></span></p>
+            <p>Guesses Remaining: <span class="lastResult">10</span></p>
+            <p class="lowOrHi"></p>
+        </div>
+    </div>
+    
+    <script src="chaiaurcode.js"></script>
+
+    <script>
+        let randomNumber = Math.floor(Math.random() * 100) + 1;
+        let guesses = [];
+        let remainingGuesses = 10;
+
+        const guessField = document.querySelector('.guessField');
+        const guessSubmit = document.querySelector('.guessSubmit');
+        const guessesDisplay = document.querySelector('.guesses');
+        const lastResultDisplay = document.querySelector('.lastResult');
+        const lowOrHiDisplay = document.querySelector('.lowOrHi');
+
+        // Function to reset game
+        function resetGame() {
+            randomNumber = Math.floor(Math.random() * 100) + 1;
+            guesses = [];
+            remainingGuesses = 10;
+            lastResultDisplay.textContent = remainingGuesses;
+            guessField.value = '';
+            guessField.disabled = false;
+            guessSubmit.disabled = false;
+            lowOrHiDisplay.textContent = '';
+            guessesDisplay.textContent = '';
+        }
+
+        // Function to check the guess
+        function checkGuess(event) {
+            event.preventDefault();
+
+            const userGuess = Number(guessField.value);
+            if (isNaN(userGuess) || userGuess < 1 || userGuess > 100) {
+                lowOrHiDisplay.textContent = 'Please enter a number between 1 and 100.';
+                return;
+            }
+
+            guesses.push(userGuess);
+            remainingGuesses--;
+            guessesDisplay.textContent = guesses.join(', ');
+            lastResultDisplay.textContent = remainingGuesses;
+
+            if (userGuess === randomNumber) {
+                lowOrHiDisplay.textContent = `🎉 Congratulations! ${userGuess} is the correct number!`;
+                lowOrHiDisplay.style.color = '#4CAF50';
+                guessField.disabled = true;
+                guessSubmit.disabled = true;
+                setTimeout(resetGame, 3000);
+            } else if (remainingGuesses === 0) {
+                lowOrHiDisplay.textContent = `💀 Game Over! The number was ${randomNumber}.`;
+                lowOrHiDisplay.style.color = '#f44336';
+                guessField.disabled = true;
+                guessSubmit.disabled = true;
+                setTimeout(resetGame, 3000);
+            } else {
+                if (userGuess > randomNumber) {
+                    lowOrHiDisplay.textContent = '📈 Too high! Try again.';
+                } else {
+                    lowOrHiDisplay.textContent = '📉 Too low! Try again.';
+                }
+                lowOrHiDisplay.style.color = '#ffeb3b';
+            }
+
+            guessField.value = '';
+            guessField.focus();
+        }
+
+        guessSubmit.addEventListener('click', checkGuess);
+    </script>
+</body>
+</html>
